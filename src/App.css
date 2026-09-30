@@ -1,0 +1,6 @@
+.app {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 0 16px 2rem;
+}
+.app__footer { text-align: center; font-size: 0.85rem; margin-top: 2rem; }

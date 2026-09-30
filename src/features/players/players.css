@@ -1,0 +1,77 @@
+.players-view { display: grid; gap: 1.2rem; }
+.players-view__note { font-size: 0.85rem; margin: 0.8rem 0 0; }
+
+/* ---------- Formulario ---------- */
+.player-form { display: grid; gap: 0.8rem; }
+.player-form__row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.player-form__row input { flex: 1 1 180px; }
+.player-form__error { margin: 0; color: var(--peg-red); font-size: 0.9rem; }
+
+.master-picker {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+}
+.master-picker legend { margin-bottom: 0.5rem; font-size: 0.9rem; }
+.master-picker__item {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  padding: 0.55rem 0.3rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: rgba(3, 10, 32, 0.5);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.master-picker__item:hover { transform: translateY(-2px); }
+.master-picker__item input { position: absolute; opacity: 0; pointer-events: none; }
+.master-picker__item:has(input:focus-visible) { outline: 3px solid var(--gold); outline-offset: 2px; }
+.master-picker__item.is-selected { border-color: var(--gold); background: rgba(255, 210, 74, 0.15); }
+.master-picker__name { font-size: 0.75rem; font-weight: 600; line-height: 1.1; }
+
+/* ---------- Tarjetas ---------- */
+.player-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+}
+.player-card {
+  display: grid;
+  gap: 0.8rem;
+  align-content: start;
+  padding: 0.9rem;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 2px solid var(--surface-line);
+}
+.player-card__header { display: flex; align-items: center; gap: 0.75rem; }
+.player-card__id { flex: 1; min-width: 0; display: grid; }
+.player-card__id h3 { font-size: 1.3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-card__id .muted { font-size: 0.85rem; }
+.player-card__pos { font-family: var(--font-title); font-size: 1.6rem; color: var(--gold); }
+
+.player-card__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin: 0; }
+.player-card__stats div { background: rgba(3, 10, 32, 0.55); border-radius: 10px; padding: 0.35rem; text-align: center; }
+.player-card__stats dt { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
+.player-card__stats dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.player-card__pending { display: grid; gap: 0.4rem; font-size: 0.88rem; }
+.player-card__pending ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.player-card__done { color: var(--peg-green); font-weight: 700; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.6rem 0.15rem 0.15rem;
+  border-radius: 999px;
+  background: rgba(255, 138, 31, 0.18);
+  border: 1px solid rgba(255, 138, 31, 0.5);
+  font-weight: 500;
+}
+.player-card__actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+.player-card__actions .peg-btn { padding: 0.35rem 0.9rem; font-size: 0.85rem; }

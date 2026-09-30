@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Fredoka:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Pegs */
+  --peg-orange: #ff8a1f;
+  --peg-orange-dark: #c9540a;
+  --peg-blue: #2f9bff;
+  --peg-blue-dark: #1459b8;
+  --peg-green: #3fd46b;
+  --peg-green-dark: #1d8a3e;
+  --peg-purple: #b86bff;
+  --peg-red: #ff4d5e;
+
+  /* Marco y superficies */
+  --gold: #ffd24a;
+  --gold-dark: #b8860b;
+  --sky-top: #0b1d4d;
+  --sky-bottom: #2b0f4f;
+  --surface: rgba(16, 32, 84, 0.82);
+  --surface-2: rgba(30, 58, 138, 0.55);
+  --surface-line: rgba(126, 170, 255, 0.25);
+  --text: #f4f7ff;
+  --text-muted: #a9bce8;
+
+  --radius: 18px;
+  --font-title: "Luckiest Guy", "Fredoka", system-ui, sans-serif;
+  --font-body: "Fredoka", system-ui, sans-serif;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { min-height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: radial-gradient(ellipse at top, #1d3f9a 0%, var(--sky-top) 45%, var(--sky-bottom) 100%) fixed;
+  background-color: var(--sky-top);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--font-title); font-weight: 400; letter-spacing: 0.02em; margin: 0; }
+
+button, input, select { font: inherit; color: inherit; }
+
+input, select {
+  background: rgba(5, 14, 40, 0.7);
+  border: 2px solid var(--surface-line);
+  border-radius: 12px;
+  padding: 0.55rem 0.8rem;
+  min-width: 0;
+}
+input:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255, 210, 74, 0.25); }
+
+.title-text {
+  font-family: var(--font-title);
+  background: linear-gradient(180deg, #fff6b0 0%, var(--gold) 40%, var(--peg-orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1.5px #5a1d00;
+  filter: drop-shadow(0 3px 0 #3a1200);
+}
+
+.muted { color: var(--text-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

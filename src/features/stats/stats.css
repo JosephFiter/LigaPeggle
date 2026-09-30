@@ -1,0 +1,24 @@
+.stats {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+}
+.stat {
+  --c: var(--peg-orange);
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 2px solid var(--surface-line);
+  border-top: 5px solid var(--c);
+}
+.stat--blue { --c: var(--peg-blue); }
+.stat--green { --c: var(--peg-green); }
+.stat--purple { --c: var(--peg-purple); }
+.stat__label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+.stat__value { font-family: var(--font-title); font-size: 1.8rem; color: var(--c); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5); overflow-wrap: anywhere; }
+.stat__value .player-tag__name { font-family: var(--font-body); font-size: 1.2rem; color: var(--text); }
+.stat__note { font-size: 0.88rem; color: var(--text-muted); }
+.stat__note strong { color: var(--text); }

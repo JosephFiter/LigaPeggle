@@ -1,0 +1,7 @@
+.settings { display: grid; gap: 1.2rem; }
+.settings__name { width: 100%; font-size: 1.15rem; font-weight: 600; }
+.settings__text { margin: 0 0 0.9rem; }
+.settings__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.settings__msg { margin: 0.8rem 0 0; font-weight: 600; }
+.settings__msg--ok { color: var(--peg-green); }
+.settings__msg--error { color: var(--peg-red); }

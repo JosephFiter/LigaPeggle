@@ -1,0 +1,95 @@
+.app-header {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: center;
+  text-align: center;
+  padding: 1.6rem 0 1rem;
+}
+.app-header__logo { display: flex; align-items: center; gap: 0.8rem; max-width: 100%; }
+.app-header__logo h1 {
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+.app-header__ball {
+  flex: none;
+  width: clamp(28px, 6vw, 44px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff 0 12%, #d9e2f0 30%, #7d8aa0 75%, #3c4658);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  animation: bounce 1.6s cubic-bezier(0.3, 0, 0.6, 1) infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(-10px); }
+  50% { transform: translateY(6px) scale(1.06, 0.94); }
+}
+.app-header__meter { width: min(520px, 100%); }
+
+/* ---------- Tabs ---------- */
+.tabbar {
+  position: sticky;
+  top: 8px;
+  z-index: 20;
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  margin-bottom: 1.2rem;
+  border-radius: 999px;
+  background: rgba(8, 18, 52, 0.9);
+  border: 3px solid var(--gold);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabbar__tab {
+  position: relative;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+.tabbar__tab:hover { color: var(--text); }
+.tabbar__tab.is-active {
+  color: #fff;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.45) 0 10%, transparent 35%),
+    linear-gradient(180deg, var(--peg-orange), var(--peg-orange-dark));
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+.tabbar__icon { font-size: 1.1rem; }
+.tabbar__badge {
+  min-width: 1.35rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1.35rem;
+  background: var(--peg-blue);
+  color: #fff;
+}
+.tabbar__tab.is-active .tabbar__badge { background: #fff; color: var(--peg-orange-dark); }
+@media (max-width: 560px) {
+  .tabbar__label { display: none; }
+  .tabbar__tab { padding: 0.6rem; }
+}
+
+/* ---------- Fondo de pegs ---------- */
+.peg-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.peg-bg__peg {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.22;
+  box-shadow: inset -2px -3px 0 rgba(0, 0, 0, 0.35), inset 2px 2px 0 rgba(255, 255, 255, 0.4);
+  animation: drift 8s ease-in-out infinite;
+}
+.peg-bg__peg.is-brick { border-radius: 8px; transform: rotate(-15deg); }
+@keyframes drift { 50% { translate: 0 -12px; } }
