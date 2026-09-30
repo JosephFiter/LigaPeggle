@@ -43,7 +43,8 @@
   border: 2px solid transparent;
   transition: border-color 0.15s, transform 0.1s;
 }
-.match:hover { border-color: var(--gold); transform: translateY(-1px); }
+.match:hover:not(:disabled) { border-color: var(--gold); transform: translateY(-1px); }
+.match:disabled { cursor: default; color: inherit; }
 .match:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 .match--pending { border-color: rgba(255, 138, 31, 0.35); }
 

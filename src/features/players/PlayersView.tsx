@@ -8,7 +8,7 @@ import { PlayerForm } from "./PlayerForm";
 import "./players.css";
 
 export function PlayersView() {
-  const { league, dispatch, standings, playerById } = useLeague();
+  const { league, dispatch, standings, playerById, isAdmin } = useLeague();
   const [editing, setEditing] = useState<Player | null>(null);
   const matches = allMatches(league);
   const names = league.players.map((p) => p.name.toLowerCase());
@@ -23,22 +23,24 @@ export function PlayersView() {
 
   return (
     <div className="players-view">
-      <Panel title="Agregar jugador">
-        <PlayerForm
-          submitLabel="Agregar"
-          takenNames={names}
-          onSubmit={(v) => dispatch({ type: "addPlayer", ...v })}
-        />
-        {Object.keys(league.results).length > 0 && (
-          <p className="muted players-view__note">
-            Ojo: si agregás o sacás jugadores con la liga empezada, se reacomodan las fechas (los resultados cargados se mantienen).
-          </p>
-        )}
-      </Panel>
+      {isAdmin && (
+        <Panel title="Agregar jugador">
+          <PlayerForm
+            submitLabel="Agregar"
+            takenNames={names}
+            onSubmit={(v) => dispatch({ type: "addPlayer", ...v })}
+          />
+          {Object.keys(league.results).length > 0 && (
+            <p className="muted players-view__note">
+              Ojo: si agregás o sacás jugadores con la liga empezada, se reacomodan las fechas (los resultados cargados se mantienen).
+            </p>
+          )}
+        </Panel>
+      )}
 
       <Panel title={`Jugadores (${league.players.length})`}>
         {league.players.length === 0 ? (
-          <EmptyState emoji="🎯" title="Todavía no hay jugadores" >Agregá a tus amigos arriba.</EmptyState>
+          <EmptyState emoji="🎯" title="Todavía no hay jugadores">{isAdmin && "Agregá a tus amigos arriba."}</EmptyState>
         ) : (
           <div className="player-cards">
             {league.players.map((p) => {
@@ -82,10 +84,12 @@ export function PlayersView() {
                     )}
                   </div>
 
-                  <footer className="player-card__actions">
-                    <PegButton variant="ghost" onClick={() => setEditing(p)}>Editar</PegButton>
-                    <PegButton variant="ghost" onClick={() => remove(p)}>Eliminar</PegButton>
-                  </footer>
+                  {isAdmin && (
+                    <footer className="player-card__actions">
+                      <PegButton variant="ghost" onClick={() => setEditing(p)}>Editar</PegButton>
+                      <PegButton variant="ghost" onClick={() => remove(p)}>Eliminar</PegButton>
+                    </footer>
+                  )}
                 </article>
               );
             })}

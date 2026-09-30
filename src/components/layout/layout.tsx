@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useLeague } from "../../state/LeagueContext";
-import { FeverMeter } from "../ui/ui";
+import { FeverMeter, PegButton } from "../ui/ui";
 import "./layout.css";
 
 export interface TabDef<T extends string> {
@@ -50,6 +50,43 @@ export function TabBar<T extends string>({ tabs, active, onChange }: {
         </button>
       ))}
     </nav>
+  );
+}
+
+/** Estado de conexión: errores de carga y, en modo admin, el autoguardado. */
+export function SyncStatus({ onGoToSettings }: { onGoToSettings: () => void }) {
+  const { loadStatus, loadError, reload, isAdmin, saveStatus, saveError } = useLeague();
+
+  if (loadError) {
+    return (
+      <div className="sync sync--error" role="alert">
+        <span><strong>No se pudo conectar con el servidor.</strong> {loadError}</span>
+        <PegButton variant="ghost" onClick={reload}>Reintentar</PegButton>
+      </div>
+    );
+  }
+  if (loadStatus !== "ready") return null;
+
+  if (!isAdmin) {
+    return (
+      <div className="sync">
+        <span className="muted">🔒 Modo lectura</span>
+        <button className="sync__link" onClick={onGoToSettings}>Entrar como admin</button>
+      </div>
+    );
+  }
+
+  const label = {
+    idle: "Los cambios se guardan solos",
+    saving: "Guardando…",
+    saved: "Guardado ✓",
+    error: `No se pudo guardar: ${saveError}`,
+  }[saveStatus];
+
+  return (
+    <div className={`sync sync--admin sync--${saveStatus}`} role="status">
+      <span>✏️ <strong>Modo admin</strong> · {label}</span>
+    </div>
   );
 }
 

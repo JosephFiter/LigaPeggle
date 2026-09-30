@@ -1,13 +1,62 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useLeague } from "../../state/LeagueContext";
 import { downloadLeague, parseLeague } from "../../state/storage";
 import { Panel, PegButton } from "../../components/ui/ui";
 import "./settings.css";
 
+type Message = { kind: "ok" | "error"; text: string } | null;
+
 export function SettingsView() {
-  const { league, dispatch } = useLeague();
+  const { isAdmin } = useLeague();
+  return <div className="settings">{isAdmin ? <AdminSettings /> : <LoginPanel />}</div>;
+}
+
+function LoginPanel() {
+  const { login } = useLeague();
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    try {
+      await login(password);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo entrar");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Panel title="Entrar como admin">
+      <p className="muted settings__text">
+        Cualquiera puede ver la liga. Para cargar resultados o jugadores hace falta la contraseña de admin.
+      </p>
+      <form className="settings__login" onSubmit={submit}>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          autoComplete="current-password"
+          aria-label="Contraseña de admin"
+        />
+        <PegButton type="submit" variant="green" disabled={!password || busy}>
+          {busy ? "Entrando…" : "Entrar"}
+        </PegButton>
+      </form>
+      {error && <p className="settings__msg settings__msg--error">{error}</p>}
+    </Panel>
+  );
+}
+
+function AdminSettings() {
+  const { league, dispatch, logout } = useLeague();
   const fileRef = useRef<HTMLInputElement>(null);
-  const [message, setMessage] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<Message>(null);
 
   const importFile = async (file: File) => {
     try {
@@ -21,14 +70,14 @@ export function SettingsView() {
   };
 
   const reset = () => {
-    if (confirm("¿Borrar toda la liga? Esto no se puede deshacer (salvo que tengas un backup exportado).")) {
+    if (confirm("¿Borrar toda la liga para todos? Esto no se puede deshacer (salvo que tengas un backup).")) {
       dispatch({ type: "reset" });
       setMessage({ kind: "ok", text: "Liga reiniciada." });
     }
   };
 
   return (
-    <div className="settings">
+    <>
       <Panel title="Nombre de la liga">
         <input
           className="settings__name"
@@ -41,11 +90,11 @@ export function SettingsView() {
 
       <Panel title="Datos">
         <p className="muted settings__text">
-          Los datos se guardan en este navegador. Exportá un backup para pasárselo a tus amigos o moverlo a otra compu.
+          Todo lo que cambies se guarda solo en el servidor y lo ven todos. El backup es opcional, por si algo sale mal.
         </p>
         <div className="settings__actions">
-          <PegButton variant="blue" onClick={() => downloadLeague(league)}>⬇ Exportar JSON</PegButton>
-          <PegButton variant="blue" onClick={() => fileRef.current?.click()}>⬆ Importar JSON</PegButton>
+          <PegButton variant="blue" onClick={() => downloadLeague(league)}>⬇ Descargar backup</PegButton>
+          <PegButton variant="blue" onClick={() => fileRef.current?.click()}>⬆ Restaurar backup</PegButton>
           <PegButton variant="danger" onClick={reset}>Reiniciar liga</PegButton>
           <input
             ref={fileRef}
@@ -61,6 +110,12 @@ export function SettingsView() {
         </div>
         {message && <p className={`settings__msg settings__msg--${message.kind}`}>{message.text}</p>}
       </Panel>
-    </div>
+
+      <Panel title="Sesión">
+        <div className="settings__actions">
+          <PegButton variant="ghost" onClick={logout}>Salir del modo admin</PegButton>
+        </div>
+      </Panel>
+    </>
   );
 }

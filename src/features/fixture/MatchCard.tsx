@@ -3,7 +3,8 @@ import type { Match } from "../../domain/types";
 import { useLeague } from "../../state/LeagueContext";
 import { formatScore, PlayerTag } from "../../components/ui/ui";
 
-export function MatchCard({ match, onOpen }: { match: Match; onOpen: (m: Match) => void }) {
+/** Tarjeta de un cruce. Sin `onOpen` (modo lectura) no es clickeable. */
+export function MatchCard({ match, onOpen }: { match: Match; onOpen?: (m: Match) => void }) {
   const { playerById } = useLeague();
   const a = playerById(match.a)!;
   const b = playerById(match.b)!;
@@ -16,8 +17,9 @@ export function MatchCard({ match, onOpen }: { match: Match; onOpen: (m: Match) 
   return (
     <button
       className={`match ${r ? "match--played" : "match--pending"}`}
-      onClick={() => onOpen(match)}
-      title={r ? "Editar resultado" : "Cargar resultado"}
+      onClick={onOpen && (() => onOpen(match))}
+      disabled={!onOpen}
+      title={onOpen ? (r ? "Editar resultado" : "Cargar resultado") : undefined}
     >
       <span className={`match__side ${side(a.id)}`}>
         <PlayerTag player={a} size="sm" />

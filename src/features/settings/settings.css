@@ -5,3 +5,5 @@
 .settings__msg { margin: 0.8rem 0 0; font-weight: 600; }
 .settings__msg--ok { color: var(--peg-green); }
 .settings__msg--error { color: var(--peg-red); }
+.settings__login { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.settings__login input { flex: 1 1 200px; }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Header, PegBackground, TabBar, type TabDef } from "./components/layout/layout";
+import { Header, PegBackground, TabBar, SyncStatus, type TabDef } from "./components/layout/layout";
 import { FixtureView } from "./features/fixture/FixtureView";
 import { PlayersView } from "./features/players/PlayersView";
 import { SettingsView } from "./features/settings/SettingsView";
@@ -27,7 +27,7 @@ function useHashTab(fallback: TabId): [TabId, (t: TabId) => void] {
 }
 
 export default function App() {
-  const { league, rounds } = useLeague();
+  const { league, rounds, loadStatus } = useLeague();
   const [tab, setTab] = useHashTab(league.players.length < 2 ? "jugadores" : "fixture");
   const pending = rounds.reduce((n, r) => n + r.matches.filter((m) => !m.result).length, 0);
 
@@ -45,12 +45,19 @@ export default function App() {
       <div className="app">
         <Header />
         <TabBar tabs={tabs} active={tab} onChange={setTab} />
+        <SyncStatus onGoToSettings={() => setTab("ajustes")} />
         <main>
-          {tab === "fixture" && <FixtureView onGoToPlayers={() => setTab("jugadores")} />}
-          {tab === "tabla" && <StandingsView />}
-          {tab === "jugadores" && <PlayersView />}
-          {tab === "stats" && <StatsView />}
-          {tab === "ajustes" && <SettingsView />}
+          {loadStatus === "loading" ? (
+            <div className="loading"><span className="loading__ball" />Cargando la liga…</div>
+          ) : (
+            <>
+              {tab === "fixture" && <FixtureView onGoToPlayers={() => setTab("jugadores")} />}
+              {tab === "tabla" && <StandingsView />}
+              {tab === "jugadores" && <PlayersView />}
+              {tab === "stats" && <StatsView />}
+              {tab === "ajustes" && <SettingsView />}
+            </>
+          )}
         </main>
         <footer className="app__footer muted">Hecho con 🦄 para los Peggle Masters del grupo</footer>
       </div>

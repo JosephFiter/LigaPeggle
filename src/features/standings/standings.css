@@ -30,8 +30,9 @@
 .standings .pos { color: var(--peg-green); }
 .standings .neg { color: var(--peg-red); }
 
-.standings tr.is-top-1 td { background: linear-gradient(90deg, rgba(255, 210, 74, 0.28), rgba(3, 10, 32, 0.6) 60%); }
+.standings tr.is-top-1 td { background: rgba(120, 90, 20, 0.45); }
 .standings tr.is-top-1 td:first-child { box-shadow: inset 4px 0 0 var(--gold); }
+.standings tr.is-top .standings__pos { font-size: 1.3rem; }
 
 .form { display: inline-flex; gap: 3px; }
 .form__peg {

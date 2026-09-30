@@ -10,7 +10,7 @@ import "./fixture.css";
 type StatusFilter = "pending" | "played" | "all";
 
 export function FixtureView({ onGoToPlayers }: { onGoToPlayers: () => void }) {
-  const { rounds, league, playerById } = useLeague();
+  const { rounds, league, playerById, isAdmin } = useLeague();
   const [status, setStatus] = useState<StatusFilter>("pending");
   const [playerId, setPlayerId] = useState("");
   const [editing, setEditing] = useState<Match | null>(null);
@@ -20,7 +20,7 @@ export function FixtureView({ onGoToPlayers }: { onGoToPlayers: () => void }) {
       <Panel>
         <EmptyState title="¡Faltan jugadores!">
           <p>Cargá al menos dos jugadores para armar el fixture.</p>
-          <button className="peg-btn peg-btn--orange" onClick={onGoToPlayers}>Agregar jugadores</button>
+          {isAdmin && <button className="peg-btn peg-btn--orange" onClick={onGoToPlayers}>Agregar jugadores</button>}
         </EmptyState>
       </Panel>
     );
@@ -63,7 +63,7 @@ export function FixtureView({ onGoToPlayers }: { onGoToPlayers: () => void }) {
             emoji={status === "pending" ? "🌈" : "🎯"}
             title={status === "pending" ? "¡No falta ningún partido!" : "Todavía no hay partidos jugados"}
           >
-            {status === "pending" ? "Ya se jugó todo lo de este filtro. ¡Extreme Fever!" : "Tocá un enfrentamiento pendiente para cargar el resultado."}
+            {status === "pending" ? "Ya se jugó todo lo de este filtro. ¡Extreme Fever!" : isAdmin ? "Tocá un enfrentamiento pendiente para cargar el resultado." : "Todavía no se cargó ningún resultado."}
           </EmptyState>
         ) : (
           <div className="rounds">
@@ -78,7 +78,7 @@ export function FixtureView({ onGoToPlayers }: { onGoToPlayers: () => void }) {
                   </header>
                   <div className="round__matches">
                     {round.shown.map((m) => (
-                      <MatchCard key={m.key} match={m} onOpen={setEditing} />
+                      <MatchCard key={m.key} match={m} onOpen={isAdmin ? setEditing : undefined} />
                     ))}
                   </div>
                   {bye && !playerId && (

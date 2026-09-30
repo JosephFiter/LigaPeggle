@@ -1,25 +1,6 @@
 import type { League } from "../domain/types";
 
-const STORAGE_KEY = "liga-peggle:v1";
-
 export const emptyLeague = (): League => ({ name: "Liga Peggle", players: [], results: {} });
-
-export function loadLeague(): League {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? parseLeague(raw) : emptyLeague();
-  } catch {
-    return emptyLeague();
-  }
-}
-
-export function saveLeague(league: League): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(league));
-  } catch {
-    // Sin storage disponible (modo privado, cuota llena): la app sigue en memoria.
-  }
-}
 
 /** Valida y normaliza un JSON de liga (usado al cargar y al importar). */
 export function parseLeague(raw: string): League {
@@ -48,7 +29,7 @@ export function downloadLeague(league: League): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${league.name.replace(/[^\w-]+/g, "_") || "liga"}.json`;
+  a.download = "liga.json";
   a.click();
   URL.revokeObjectURL(url);
 }
